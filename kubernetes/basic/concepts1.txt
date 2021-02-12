@@ -1,0 +1,11 @@
+Namespace: 
+Virtual cluster inside a kubernetes deployment. Resources in one namespace is isolated from another.
+Commands:  
+  kubectl get namespace
+
+
+Pods: 
+Smallest unit of deployment
+Commands:
+  kubectl get pods  // default namesapce used
+  kubectl get pods -n <namespace-name>
