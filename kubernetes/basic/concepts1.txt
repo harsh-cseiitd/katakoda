@@ -2,6 +2,9 @@ Namespace:
 Virtual cluster inside a kubernetes deployment. Resources in one namespace is isolated from another.
 Commands:  
   kubectl get namespace
+  kubectl create namespace <namespace-name>
+  kubectl delete namespace <namespace-name>
+
 
 
 Pods: 
@@ -9,3 +12,10 @@ Smallest unit of deployment
 Commands:
   kubectl get pods  // default namesapce used
   kubectl get pods -n <namespace-name>
+
+
+
+Creating kubernetes objects from yaml file:
+Commands:
+  kubectl apply  -f <yaml-file-path>
+  kubectl delete -f <yaml-file-path>
