@@ -22,3 +22,22 @@ This means Cassandra sorts the rows of the partition initially on the first clus
 Therefore, queries that use the clustering columns out of order would require a full scan of the partition, which could be slow for larger partitions.
 
 
+[Question]: Want to know why you can't change primary key column values ?
+
+There are two parts to the primary key: the partition key columns and the clustering columns. Since Cassandra hashes the partition key to find the partition, changing a partition key column would require removing the row from the old partition and adding it to a new partition. If you really need to do this, you can handle this at the application level - or at least you'll be able to after you complete the next step where you will learn about DELETE :). Similarly, changing a clustering column would require Cassandra to reorder the rows in the partition. Again, if you need to do this, you will handle it in the application by deleting the row and re-adding it with the new primary key values.
+
+
+[Question]: Why does Cassandra perform upserts ?
+
+Cassandra is built for speed. As a result, Cassandra does not read a row before writing the row. So, an UPDATE doesn't check to see if the row exists before changing it. Instead, Cassandra just writes the values. Similarly, the INSERT command doesn't check to see if the row exists before writing. So, if the row does exist, the INSERT command logically writes over the previous values.
+
+
+
+
+[Question]: Why does Cassandra require values for all the primary key columns?
+
+Although Cassandra supports sparse columns, this only applies to non-primary key values. Cassandra requires the partition key columns to locate the partition. Cassandra requires the clustering columns to order the rows within a partition. Therefore, removing any of the primary key columns would not allow Cassandra to operate correctly.
+
+
+
+
