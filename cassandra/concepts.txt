@@ -1,0 +1,24 @@
+[Question]: Why did we chose these columns for the primary key?
+
+We designed this table to support a query for all users with the same last name. So, we chose last_name as the partition key. 
+We want the results of these queries to be in alphabetical order, so we used first_name as a clustering column. 
+It is possible that two different people could have the same first and last name. 
+We need the rows for these two people to be different, so we added the email column as a clustering column to make each row unique.
+
+
+[Question]: Why must queries include the partition key?
+
+Cassandra hashes the partition key to locate the partition within the cluster. 
+Hashing is very fast, which is what makes Cassandra scale so well. 
+Cassandra stores all rows with the same partition key in the same partition. 
+So, without the partition key, Cassandra would have to do a full table scan to locate the specified rows. 
+Such a scan on a production table would not be performant.
+
+
+[Question]: Why must the clustering columns be in order for queries?
+
+Cassandra stores the rows of a partition ordered by the clustering columns. 
+This means Cassandra sorts the rows of the partition initially on the first clustering column, and then on the second and so forth. 
+Therefore, queries that use the clustering columns out of order would require a full scan of the partition, which could be slow for larger partitions.
+
+
